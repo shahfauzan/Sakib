@@ -1,0 +1,29 @@
+name: Unzip site
+
+on:
+  push:
+    paths:
+      - "shakib-portfolio.zip"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  unzip:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Unzip
+        run: |
+          unzip -o shakib-portfolio.zip
+          rm shakib-portfolio.zip
+
+      - name: Commit extracted files
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Unzip site files" || echo "Nothing to commit"
+          git push
